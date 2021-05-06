@@ -42,7 +42,7 @@ conn = RPresto::dbConnect(
   #user = rstudioapi::askForPassword("Database Username"),
   #password = rstudioapi::askForPassword("Database Password"),
   host = 'host', 
-  port = 8446)
+  port = port)
 
 
 
