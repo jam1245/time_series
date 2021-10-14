@@ -9,63 +9,8 @@ library(dbplyr)
 library(tidymodels)
 library(lubridate)
 
-
-## clean up column headers 
-clean_headers <- function(data) {
-  names(data) <- gsub(" ","_",names(data))
-  names(data) <- gsub("-","",names(data))
-  names(data) <- gsub("[()]", "", names(data))
-  data <- janitor::clean_names(data)
-  return(data)
-  
-} 
-
-
-
-
-httr::set_config(
-  httr::config(
-    #userpwd=paste0(Sys.getenv('dl_un'),':',Sys.getenv('dl_pw')),
-       userpwd=paste0(rstudioapi::askForPassword("Database Username"),':',rstudioapi::askForPassword("Database Password")),
-    ssl_verifypeer=0,
-    cainfo='cacerts.pem'
-  )
-)
-
-#Setting up data lake connection
-conn = RPresto::dbConnect(
-  drv = Presto(), 
-  catalog = 'hive', 
-  schema = 'hr', 
-  #user = Sys.getenv('dl_un'), 
-  #password = Sys.getenv('dl_pw'),
-  user = rstudioapi::askForPassword("Database Username"),
-  password = rstudioapi::askForPassword("Database Password"),
-  host = 'https://rms-hrra.us.lmco.com', 
-  port = 8446)
-
-
-### scrips for forecasting 
-
-
-## End(Not run)
-## Not run: 
-#First create a database connection with src_presto, then reference a tbl
-#within that database
-#my_tbl <- tbl(my_db, "job_rms_snaps")
-
-
-#  head(10) %>%
-#  show_query()
-#  collect()
-
-tbl(conn, "job_rms_snaps") %>% head()
-
-snaps <- tbl(conn, "job_rms_snaps")
-#snaps <- snaps %>% as_tibble()
-
-#%>% 
-
+setwd("C:/Users/e394102/Documents/GitHub/time_series/R")
+source("hive_connection.R")
 
 df <- snaps %>%
   #select(`Employee ID`) %>% 
